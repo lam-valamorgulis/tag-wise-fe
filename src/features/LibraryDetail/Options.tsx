@@ -3,7 +3,7 @@ import { Button, Checkbox, Col, Divider, Input, List, Row, Tag } from "antd";
 import { useState } from "react";
 
 const data = [
-  "1. HQ Rule (HQ) or Non-Media Tag : Bypass checking: date ranges validate in 2 months, Rules order >= 50",
+  "1. HQ Rule (HQ) or Non-Media (Beusable,Sprinklr,Medallia,TrustArc):Bypass: Date range within 2 months, Rules Order >= 50",
   "2. Shop Section : Force to check Event : Data Element Change",
   "3. Cookies Check: Force to check Condition: TrustArc",
   "4. Keywords Check: Force to check Condition and Actions: Path and Query string and all Custom code are contained keyword",

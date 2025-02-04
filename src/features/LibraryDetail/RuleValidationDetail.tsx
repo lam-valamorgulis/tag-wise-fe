@@ -7,8 +7,8 @@ interface RuleValidationDetailProps {
 function RuleValidationDetail({
   ruleValidationResult,
 }: RuleValidationDetailProps) {
-  console.log("Rule Validation Result:", ruleValidationResult);
-  if (!ruleValidationResult) return <p>click Validate to audit rule</p>;
+  if (typeof ruleValidationResult == "string")
+    return <p>Click Validate to audit rule</p>;
 
   return (
     <>

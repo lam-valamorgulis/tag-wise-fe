@@ -8,6 +8,8 @@ import RuleValidationDetail from "./RuleValidationDetail";
 import { RuleList } from "./useRule";
 import { useRuleValidation } from "./useRuleValidation";
 
+import { useEffect } from "react";
+
 function RulesList({ rules, options }: { rules: RuleList; options: Options }) {
   const { ruleValidation, ruleValidationResult } = useRuleValidation();
   const { propertyId } = useParams<{ propertyId: string }>();
@@ -15,23 +17,17 @@ function RulesList({ rules, options }: { rules: RuleList; options: Options }) {
   const [validationResults, setValidationResults] = useState<
     Record<string, any>
   >({});
+  const [validatingRuleId, setValidatingRuleId] = useState<string | null>(null);
 
   const handleValidateRule = async (ruleId: string, ruleName: string) => {
     try {
-      message.loading({ content: `Validating ${ruleName}...`, key: ruleId });
+      setValidatingRuleId(ruleId); // Track which rule is being validated
 
-      // Call API and get validation result
       await ruleValidation({ ruleId, data: { ...options, ruleName } });
 
-      // Update validation result for the specific rule
-      setValidationResults((prevResults) => ({
-        ...prevResults,
-        [ruleId]: ruleValidationResult ?? "No validation data available",
-      }));
-
-      // Expand the panel after validation
+      // Keep the panel open
       if (!activePanels.includes(ruleId)) {
-        setActivePanels([...activePanels, ruleId]);
+        setActivePanels((prev) => [...prev, ruleId]);
       }
 
       message.success({
@@ -43,6 +39,18 @@ function RulesList({ rules, options }: { rules: RuleList; options: Options }) {
       message.error(`Validation failed for ${ruleName}`);
     }
   };
+
+  // Automatically update UI when ruleValidationResult changes
+  useEffect(() => {
+    if (validatingRuleId && ruleValidationResult) {
+      setValidationResults((prevResults) => ({
+        ...prevResults,
+        [validatingRuleId]:
+          ruleValidationResult ?? "No validation data available",
+      }));
+      setValidatingRuleId(null); // Reset after storing result
+    }
+  }, [ruleValidationResult, validatingRuleId]);
 
   // Handle collapse panel change
   const handleCollapseChange = (keys: string | string[]) => {
@@ -59,7 +67,6 @@ function RulesList({ rules, options }: { rules: RuleList; options: Options }) {
           padding: "4px 0",
           fontFamily: "monospace",
           fontSize: "10px",
-          backgroundColor: "#e0e0e0",
           borderRadius: "3px",
           margin: "2px 0",
         }}
@@ -92,6 +99,7 @@ function RulesList({ rules, options }: { rules: RuleList; options: Options }) {
           <Button
             type="dashed"
             onClick={(e) => {
+              e.preventDefault();
               e.stopPropagation();
               handleValidateRule(rule.id, rule.name);
             }}
@@ -113,9 +121,7 @@ function RulesList({ rules, options }: { rules: RuleList; options: Options }) {
     children: (
       <RuleValidationDetail
         ruleValidationResult={
-          validationResults[rule.id] === "No validation data available"
-            ? "Click 'Validate' to check rule"
-            : validationResults[rule.id]
+          validationResults[rule.id] ?? "Click 'Validate' to check rule"
         }
       />
     ),

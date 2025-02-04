@@ -4,12 +4,14 @@ import { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router-dom";
 import { AuthenticationGuard } from "./components/AuthenticationGuard";
 import CommonLayout from "./components/CommonLayout";
+import Loading from "./components/Loading";
 import Logout from "./components/Logout";
 import LibraryDetail from "./features/LibraryDetail/LibraryDetail";
-import CheckList from "./pages/CheckList";
+import Comments from "./pages/CommentsPage";
 import Dashboard from "./pages/Dashboard";
 import HomePage from "./pages/HomePage";
 import Login from "./pages/LoginPage";
+import TagChecklist from "./pages/TagChecklistPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,7 +25,7 @@ function App() {
   const { isLoading } = useAuth0();
 
   if (isLoading) {
-    return <div className="page-layout">loading call auth</div>;
+    return <Loading />;
   }
 
   return (
@@ -38,7 +40,8 @@ function App() {
             path="property/:propertyId/library/:libraryId"
             element={<LibraryDetail />}
           />
-          <Route path="checklist" element={<CheckList />} />
+          <Route path="checklist" element={<TagChecklist />} />
+          <Route path="comments" element={<Comments />} />
         </Route>
 
         <Route path="/logout" element={<Logout />} />

@@ -13,8 +13,6 @@ export const Auth0ProviderWithNavigate = ({
   const redirectUri = import.meta.env.VITE_AUTH0_REDIRECT_URI;
 
   const onRedirectCallback = (appState?: AppState) => {
-    console.log("Redirecting with appState:", appState);
-
     navigate(appState?.returnTo || window.location.pathname);
   };
 

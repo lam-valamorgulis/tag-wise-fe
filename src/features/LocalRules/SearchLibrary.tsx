@@ -40,6 +40,7 @@ function SearchLibrary({
       >
         <Form.Item<FieldType>
           name="libraryName"
+          initialValue="20250203 DIA Cheil_Date Range_1"
           label="Library Name"
           rules={[
             { required: true, message: "Please input your Library Name!" },
@@ -54,6 +55,7 @@ function SearchLibrary({
 
         <Form.Item<FieldType>
           name="propertyName"
+          initialValue="ZP6_HU-Hungary(EU SEH) WebSDK"
           label="Property Name"
           rules={[
             { required: true, message: "Please input your Property Name!" },

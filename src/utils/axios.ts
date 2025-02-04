@@ -13,6 +13,10 @@ const apiRule = axios.create({
   baseURL: BASE_URL + "/rule",
 });
 
+const apiComment = axios.create({
+  baseURL: BASE_URL + "/comments",
+});
+
 const apiSearchLibrary = async (data: {
   libraryName: string;
   propertyName: string;
@@ -75,8 +79,68 @@ const apiValidateRule = async (
   }
 };
 
+const apiGetListComment = async (hashtag?: string, category?: string) => {
+  try {
+    const response = await apiComment.get("/", {
+      params: {
+        ...(hashtag ? { hashtag: encodeURIComponent(hashtag) } : {}),
+        ...(category ? { category: encodeURIComponent(category) } : {}),
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching comments:", error);
+    throw error;
+  }
+};
+
+const apiCreateComment = async (data: {
+  category: string;
+  commentDetail: string;
+  hashtag?: string;
+}) => {
+  try {
+    const response = await apiComment.post(`/`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
+const apiEditComment = async (
+  commentId: string,
+  data: {
+    category: string;
+    commentDetail: string;
+    hashtag?: string;
+  }
+) => {
+  try {
+    const response = await apiComment.put(`/${commentId}`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
+const apiDeleteComment = async (commentId: string) => {
+  try {
+    const response = await apiComment.delete(`/${commentId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
 export {
+  apiCreateComment,
+  apiDeleteComment,
   apiDetailProperty,
+  apiEditComment,
+  apiGetListComment,
   apiLibrary,
   apiRuleList,
   apiSearchLibrary,

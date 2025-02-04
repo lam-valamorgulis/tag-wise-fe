@@ -6,7 +6,7 @@ import {
 } from "@ant-design/icons";
 import { Layout, Menu, theme } from "antd";
 import { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import HeaderBar from "../components/HeaderBar";
 import LogoApp from "../components/LogoApp";
 
@@ -14,6 +14,8 @@ const { Sider, Content } = Layout;
 
 const CommonLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const navigate = useNavigate();
+
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
   };
@@ -39,6 +41,17 @@ const CommonLayout = () => {
           mode="inline"
           style={{ borderInlineEndStyle: "none" }}
           defaultSelectedKeys={["1"]}
+          onClick={({ key }) => {
+            navigate(
+              key === "1"
+                ? "/"
+                : key === "2"
+                ? "/checklist"
+                : key === "3"
+                ? "/comments"
+                : "/"
+            );
+          }}
           items={[
             {
               key: "1",
@@ -71,12 +84,14 @@ const CommonLayout = () => {
           style={{
             margin: "12px 8px",
             padding: 12,
-            minHeight: 280,
             background: colorBgContainer,
             borderRadius: borderRadiusLG,
+            overflow: "auto",
+            height: "calc(100vh - 112px)",
+            display: "flex",
+            flexDirection: "column",
           }}
         >
-          {/* Render Outlet for child routes */}
           <Outlet />
         </Content>
       </Layout>

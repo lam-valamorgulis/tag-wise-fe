@@ -23,7 +23,6 @@ createRoot(document.getElementById("root")!).render(
             token: {
               fontSize: 14,
               sizeStep: 4,
-              // sizeUnit: 6,
             },
             algorithm: theme.compactAlgorithm,
           }}
