@@ -49,7 +49,7 @@ const CommonLayout = () => {
                 ? "/checklist"
                 : key === "3"
                 ? "/comments"
-                : "/"
+                : "/hqrules"
             );
           }}
           items={[

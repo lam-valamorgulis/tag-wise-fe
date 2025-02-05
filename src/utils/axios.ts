@@ -30,6 +30,29 @@ const apiSearchLibrary = async (data: {
   }
 };
 
+const apiCreateLibrary = async (data: {
+  propertiesId: string[];
+  libraryName: string;
+}) => {
+  try {
+    const response = await apiLibrary.post("/bulk_create", data);
+    return response.data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
+const apiSearchProperty = async (data: { propertyName: string }) => {
+  try {
+    const response = await apiProperty.post("/search", data);
+    return response.data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
 const apiDetailProperty = async (propertyId: string) => {
   try {
     const response = await apiProperty.get("/detail/" + propertyId);
@@ -137,6 +160,7 @@ const apiDeleteComment = async (commentId: string) => {
 
 export {
   apiCreateComment,
+  apiCreateLibrary,
   apiDeleteComment,
   apiDetailProperty,
   apiEditComment,
@@ -144,6 +168,7 @@ export {
   apiLibrary,
   apiRuleList,
   apiSearchLibrary,
+  apiSearchProperty,
   apiSummaryLibrary,
   apiValidateRule,
 };
