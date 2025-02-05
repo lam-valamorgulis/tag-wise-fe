@@ -3,12 +3,10 @@ import { useParams } from "react-router-dom";
 import { apiSummaryLibrary } from "../../utils/axios";
 
 interface RulesName {
-  "AD(Criteo)": number;
-  "AD(Insider)": number;
-  "AD(Optimise)": number;
+  [key: string]: number;
 }
-
 export interface LibrarySummary {
+  libraryName: string;
   rulesName: RulesName;
   total: number;
 }

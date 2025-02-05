@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+// /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 
 export interface ValidationData {
@@ -142,6 +143,16 @@ const ValidationResults: React.FC<ValidationResultsProps> = ({
     margin: "3px 0",
     padding: "3px",
     fontFamily: "monospace",
+    wordBreak: "break-word",
+  };
+
+  const testItemStyle: React.CSSProperties = {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    gap: "8px",
+    width: "100%",
+    margin: "3px 0",
   };
 
   const subHeaderStyle: React.CSSProperties = {
@@ -152,6 +163,11 @@ const ValidationResults: React.FC<ValidationResultsProps> = ({
     fontFamily: "monospace",
   };
 
+  const listItemStyle: React.CSSProperties = {
+    marginLeft: "10px",
+    listStyleType: "none",
+  };
+
   const renderStatus = (isValid?: boolean) => (
     <span
       style={{
@@ -159,11 +175,25 @@ const ValidationResults: React.FC<ValidationResultsProps> = ({
         marginLeft: "4px",
         fontSize: "10px",
         fontFamily: "monospace",
+        whiteSpace: "nowrap",
       }}
     >
       {isValid ? "✓ PASS" : "✗ FAIL"}
     </span>
   );
+
+  const renderList = (items: string[] | undefined) => {
+    if (!items || items.length === 0) return "N/A";
+    return (
+      <ul style={{ paddingLeft: "10px", margin: "0" }}>
+        {items.map((item, index) => (
+          <li key={index} style={listItemStyle}>
+            . {item}
+          </li>
+        ))}
+      </ul>
+    );
+  };
 
   return (
     <div style={containerStyle}>
@@ -171,21 +201,25 @@ const ValidationResults: React.FC<ValidationResultsProps> = ({
       <div style={sectionStyle}>
         <h3 style={sectionTitleStyle}>I. Check Name</h3>
         <div style={testCaseStyle}>
-          <p>
-            • Rule Name start with (LC):{" "}
+          <div style={testItemStyle}>
+            <span>• Rule Name start with (LC):</span>
             {renderStatus(checkName?.valideName?.userType === "pass")}
-          </p>
-          <p>
-            • Site Section contains{" "}
-            {checkName?.components?.siteSection ?? "N/A"}:{" "}
+          </div>
+          <div style={testItemStyle}>
+            <span>
+              • Site Section contains{" "}
+              {checkName?.components?.siteSection ?? "N/A"}:
+            </span>
             {renderStatus(checkName?.valideName?.siteSection === "pass")}
-          </p>
-          <p>• Purpose: {checkName?.components?.purpose ?? "N/A"}</p>
-          <p>• Tracking Page: {checkName?.components?.trackingPage ?? "N/A"}</p>
-          <p>
+          </div>
+          <div>• Purpose: {checkName?.components?.purpose ?? "N/A"}</div>
+          <div>
+            • Tracking Page: {checkName?.components?.trackingPage ?? "N/A"}
+          </div>
+          <div>
             • Tracking Feature:{" "}
             {checkName?.components?.trackingFeature ?? "N/A"}
-          </p>
+          </div>
         </div>
       </div>
 
@@ -194,59 +228,53 @@ const ValidationResults: React.FC<ValidationResultsProps> = ({
         <h3 style={sectionTitleStyle}>II. Check Events</h3>
         <div style={testCaseStyle}>
           <h4 style={subHeaderStyle}>a. Check Window Load</h4>
-          <p>
-            • Rules contains WL:{" "}
+          <div style={testItemStyle}>
+            <span>• Rules contains WL:</span>
             {renderStatus(checkEvents?.checkWindowLoad?.isRuleContainWL)}
-          </p>
-          <p>
-            • Events:{" "}
-            {checkEvents?.checkWindowLoad?.eventComponents?.join(", ") ?? "N/A"}
-          </p>
+          </div>
+          <div>
+            • Events:
+            {renderList(checkEvents?.checkWindowLoad?.eventComponents)}
+          </div>
 
           <h4 style={subHeaderStyle}>b. Check Data Element Change</h4>
           {checkEvents?.checkWindowLoad?.invalidComponents?.map((comp, i) => (
-            <div key={i}>
-              <p>
-                • {comp?.reason ?? "No reason provided"} :{" "}
-                {renderStatus(comp?.isValid)}
-              </p>
+            <div style={testItemStyle} key={i}>
+              <span>• {comp?.reason ?? "No reason provided"}</span>
+              {renderStatus(comp?.isValid)}
             </div>
           ))}
 
           {checkEvents?.checkWindowLoad?.validComponents?.map((comp, i) => (
-            <div key={i}>
-              <p>
-                • {comp?.reason ?? "No reason provided"} :{" "}
-                {renderStatus(comp?.isValid)}
-              </p>
+            <div style={testItemStyle} key={i}>
+              <span>• {comp?.reason ?? "No reason provided"}</span>
+              {renderStatus(comp?.isValid)}
             </div>
           ))}
 
           <h4 style={subHeaderStyle}>c. Check Rule Order</h4>
-          <p>
-            • All is greater than 50:{" "}
+          <div style={testItemStyle}>
+            <span>• All is greater than 50:</span>
             {renderStatus(
               checkEvents?.checkRuleOrder?.checkComponents?.[0]?.isValid
             )}
-          </p>
+          </div>
 
           <h4 style={subHeaderStyle}>d. Check Consent Mode</h4>
-          <p>
-            •{" "}
-            {checkEvents?.checkCookiesEvent?.validatedComponents?.[0]?.reason ??
-              "No reason provided"}{" "}
-            :{" "}
+          <div style={testItemStyle}>
+            <span>
+              •{" "}
+              {checkEvents?.checkCookiesEvent?.validatedComponents?.[0]
+                ?.reason ?? "No reason provided"}
+            </span>
             {renderStatus(
               checkEvents?.checkCookiesEvent?.validatedComponents?.[0]?.isValid
             )}
-          </p>
-
-          <p>
-            {(checkEvents?.checkCookiesEvent?.eventComponents?.length ?? 0) >
-              0 && <span>• Events: </span>}
-            {checkEvents?.checkCookiesEvent?.eventComponents?.join(", ") ??
-              "N/A"}
-          </p>
+          </div>
+          <div>
+            • Events:
+            {renderList(checkEvents?.checkCookiesEvent?.eventComponents)}
+          </div>
         </div>
       </div>
 
@@ -255,73 +283,72 @@ const ValidationResults: React.FC<ValidationResultsProps> = ({
         <h3 style={sectionTitleStyle}>III. Check Conditions</h3>
         <div style={testCaseStyle}>
           <h4 style={subHeaderStyle}>a. Check Date Range</h4>
-          <p>
-            • Is Rule contains a date range{" "}
+          <div style={testItemStyle}>
+            <span>• Is Rule contains a date range</span>
             {renderStatus(checkCondition?.checkDateRange?.isContainDateRange)}
-          </p>
+          </div>
           {checkCondition?.checkDateRange?.validComponents?.map((comp, i) => (
             <div key={i}>
-              <p>
-                • {comp?.reason ?? "No reason provided"} :{" "}
+              <div style={testItemStyle}>
+                <span>• {comp?.reason ?? "No reason provided"}</span>
                 {renderStatus(comp?.isValid)}
-              </p>
-              <p>
-                • Rule will end before:{" "}
+              </div>
+              <div style={testItemStyle}>
+                <span>• Rule will end before: </span>
                 {comp?.endDate
                   ? new Date(comp.endDate).toLocaleDateString()
                   : "N/A"}
-              </p>
-              <p>
-                • Max date range allowed:{" "}
+              </div>
+              <div style={testItemStyle}>
+                <span>• Max date range allowed: </span>
                 {comp?.maxAllowedDate
                   ? new Date(comp.maxAllowedDate).toLocaleDateString()
                   : "N/A"}
-              </p>
+              </div>
             </div>
           ))}
 
           {checkCondition?.checkDateRange?.invalidComponents?.map((comp, i) => (
-            <p key={i} style={{ color: "#900" }}>
-              • {comp?.reason ?? "No reason provided"}:{" "}
+            <div style={testItemStyle} key={i}>
+              <span style={{ color: "#900" }}>
+                • {comp?.reason ?? "No reason provided"}
+              </span>
               {renderStatus(comp?.isValid)}
-            </p>
+            </div>
           ))}
 
           <h4 style={subHeaderStyle}>b. Check Path & Query String</h4>
-          <p>
-            • Is Rule contains Condition a path and query string:{" "}
+          <div style={testItemStyle}>
+            <span>• Is Rule contains Condition a path and query string:</span>
             {renderStatus(checkCondition?.checkPathString?.isContainQueryPath)}
-          </p>
-
-          <p>
-            {(checkCondition?.checkPathString?.conditionElement?.length ?? 0) >
-              0 && <span>• Condition: </span>}
-            {checkCondition?.checkPathString?.conditionElement?.join(", ") ??
-              "N/A"}
-          </p>
+          </div>
+          <div>
+            • Condition:
+            {renderList(checkCondition?.checkPathString?.conditionElement)}
+          </div>
 
           {checkCondition?.checkPathString?.validComponents?.map((comp, i) => (
-            <p key={i}>
-              • {comp?.reason ?? "No reason provided"}:{" "}
+            <div style={testItemStyle} key={i}>
+              <span>• {comp?.reason ?? "No reason provided"}</span>
               {renderStatus(comp?.isValid)}
-            </p>
+            </div>
           ))}
 
           {checkCondition?.checkPathString?.bypassedComponents?.map(
             (comp, i) => (
-              <p key={i}>
-                • {comp?.reason ?? "No reason provided"}:{" "}
+              <div style={testItemStyle} key={i}>
+                <span>• {comp?.reason ?? "No reason provided"}</span>
                 {renderStatus(comp?.isValid)}
-              </p>
+              </div>
             )
           )}
 
           {checkCondition?.checkPathString?.invalidComponents?.map(
             (comp, i) => (
-              <p key={i} style={{ color: "#900" }}>
-                • {comp?.reason ?? "No reason provided"}:{" "}
+              <div style={{ ...testItemStyle, color: "#900" }} key={i}>
+                <span>• {comp?.reason ?? "No reason provided"}</span>
                 {renderStatus(comp?.isValid)}
-              </p>
+              </div>
             )
           )}
         </div>
@@ -330,19 +357,21 @@ const ValidationResults: React.FC<ValidationResultsProps> = ({
       {/* Column 4: Check Actions */}
       <div style={sectionStyle}>
         <h3 style={sectionTitleStyle}>IV. Check Actions</h3>
-        <h4 style={subHeaderStyle}>a. Check Custom code</h4>
         <div style={testCaseStyle}>
-          • Is Actions implemented by Custom code:{" "}
-          {renderStatus(checkActions?.checkActions?.isImplementedByCustomCode)}
-        </div>
+          <h4 style={subHeaderStyle}>a. Check Custom code</h4>
+          <div style={testItemStyle}>
+            <span>• Is Actions implemented by Custom code:</span>
+            {renderStatus(
+              checkActions?.checkActions?.isImplementedByCustomCode
+            )}
+          </div>
 
-        <h4 style={subHeaderStyle}>b. Check PII</h4>
-        <div style={testCaseStyle}>
+          <h4 style={subHeaderStyle}>b. Check PII</h4>
           {checkActions?.checkActions?.validComponents?.map((comp, i) => (
-            <p key={i}>
-              • {comp?.reason ?? "No reason provided"} :{" "}
+            <div style={testItemStyle} key={i}>
+              <span>• {comp?.reason ?? "No reason provided"}</span>
               {renderStatus(comp?.isValid)}
-            </p>
+            </div>
           ))}
         </div>
       </div>

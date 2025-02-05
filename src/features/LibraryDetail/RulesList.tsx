@@ -9,8 +9,20 @@ import { RuleList } from "./useRule";
 import { useRuleValidation } from "./useRuleValidation";
 
 import { useEffect } from "react";
+import { LibrarySummary } from "./useLibrary";
+import { Property } from "./useProperty";
 
-function RulesList({ rules, options }: { rules: RuleList; options: Options }) {
+function RulesList({
+  rules,
+  options,
+  librarySummary,
+  property,
+}: {
+  rules: RuleList;
+  options: Options;
+  librarySummary: LibrarySummary;
+  property: Property;
+}) {
   const { ruleValidation, ruleValidationResult } = useRuleValidation();
   const { propertyId } = useParams<{ propertyId: string }>();
   const [activePanels, setActivePanels] = useState<string[]>([]);
@@ -65,23 +77,25 @@ function RulesList({ rules, options }: { rules: RuleList; options: Options }) {
         style={{
           width: "100%",
           padding: "4px 0",
-          fontFamily: "monospace",
           fontSize: "10px",
           borderRadius: "3px",
           margin: "2px 0",
         }}
       >
-        <Col span={6}>
-          <span style={{ color: "#333", paddingLeft: "4px" }}>{rule.id}</span>
+        {/* Equal width columns */}
+        <Col span={8} style={{ textAlign: "left" }}>
+          <span style={{ color: "#333" }}>
+            {property.propertyName} - {librarySummary.libraryName}
+          </span>
         </Col>
-        <Col span={12} style={{ textAlign: "center" }}>
+        <Col span={8} style={{ textAlign: "center" }}>
           <span
             style={{
               color: "#333",
               fontWeight: "bold",
               display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              justifyContent: "left",
+              marginLeft: "100px",
             }}
           >
             {rule.name}
@@ -95,7 +109,7 @@ function RulesList({ rules, options }: { rules: RuleList; options: Options }) {
             </a>
           </span>
         </Col>
-        <Col span={6} style={{ textAlign: "right", paddingRight: "4px" }}>
+        <Col span={8} style={{ textAlign: "right" }}>
           <Button
             type="dashed"
             onClick={(e) => {
@@ -104,11 +118,10 @@ function RulesList({ rules, options }: { rules: RuleList; options: Options }) {
               handleValidateRule(rule.id, rule.name);
             }}
             style={{
-              fontSize: "10px",
-              padding: "0 4px",
+              fontSize: "12px",
+              padding: "0 8px",
               margin: "0 8px",
               height: "auto",
-              fontFamily: "monospace",
               borderColor: "blue",
               color: "#333",
             }}

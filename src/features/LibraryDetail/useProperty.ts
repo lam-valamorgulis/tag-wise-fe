@@ -11,6 +11,11 @@ export type PropertyDetail = {
   url: string;
 };
 
+export type Property = {
+  propertySiteCode: PropertyDetail;
+  propertyName: string;
+};
+
 export default function useProperty() {
   const { propertyId } = useParams<{
     propertyId: string;
@@ -20,7 +25,7 @@ export default function useProperty() {
     data: propertyDetail,
     isLoading: isPropertyLoading,
     error: propertyError,
-  } = useQuery<PropertyDetail, Error>({
+  } = useQuery<Property, Error>({
     queryKey: ["propertyDetail", propertyId],
     queryFn: () => apiDetailProperty(propertyId ?? ""),
     enabled: !!propertyId,
