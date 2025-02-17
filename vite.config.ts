@@ -7,5 +7,6 @@ export default defineConfig({
   build: {
     outDir: "dist", // Ensure output directory is set correctly
     emptyOutDir: true,
+    minify: false,
   },
 });
