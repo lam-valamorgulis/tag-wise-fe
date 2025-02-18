@@ -4,6 +4,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { Auth0ProviderWithNavigate } from "./components/Auth0ProviderWithNavigate.tsx";
 import "./index.css";
+console.log("Before mounting React"); // Debugging log
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -33,3 +34,4 @@ createRoot(document.getElementById("root")!).render(
     </BrowserRouter>
   </StrictMode>
 );
+console.log("After mounting React"); // Debugging log
