@@ -1,10 +1,8 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router-dom";
 import { AuthenticationGuard } from "./components/AuthenticationGuard";
 import CommonLayout from "./components/CommonLayout";
-import Loading from "./components/Loading";
 import Logout from "./components/Logout";
 import LibraryDetail from "./features/LibraryDetail/LibraryDetail";
 import CommentsPage from "./pages/CommentsPage";
@@ -23,11 +21,11 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-  const { isLoading } = useAuth0();
+  // const { isLoading } = useAuth0();
 
-  if (isLoading) {
-    return <Loading />;
-  }
+  // if (isLoading) {
+  //   return <Loading />;
+  // }
 
   return (
     <QueryClientProvider client={queryClient}>
