@@ -2,6 +2,7 @@ import { ConfigProvider, theme } from "antd";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
+import App from "./App";
 import "./index.css";
 console.log("Before mounting React"); // Debugging log
 
@@ -26,7 +27,7 @@ createRoot(document.getElementById("root")!).render(
           algorithm: theme.compactAlgorithm,
         }}
       >
-        {/* <App /> */}
+        <App />
         <h1>hello world</h1>
       </ConfigProvider>
       {/* </Auth0ProviderWithNavigate> */}
