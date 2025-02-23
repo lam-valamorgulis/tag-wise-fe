@@ -86,9 +86,40 @@ const columns = [
 ];
 
 const copyToClipboard = (data: any[]) => {
-  const text = data.map((row) => `${row.item}: ${row.result}`).join("\n");
-  navigator.clipboard.writeText(text);
+  const htmlContent = `
+    <table border="1" cellspacing="0" cellpadding="5" style="border-collapse: collapse;">
+      <thead>
+        <tr>
+          <th style="border: 1px solid black; padding: 5px;">Item</th>
+          <th style="border: 1px solid black; padding: 5px;">Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${data
+          .map(
+            (row) =>
+              `<tr>
+                <td style="border: 1px solid black; padding: 5px;">${row.item}</td>
+                <td style="border: 1px solid black; padding: 5px;">${row.result}</td>
+              </tr>`
+          )
+          .join("")}
+      </tbody>
+    </table>
+  `;
+
+  const blob = new Blob([htmlContent], { type: "text/html" });
+  const clipboardItem = new ClipboardItem({ "text/html": blob });
+
+  navigator.clipboard.write([clipboardItem]).catch((err) => {
+    console.error("Error copying table:", err);
+  });
 };
+
+// const copyToClipboard = (data: any[]) => {
+//   const text = data.map((row) => `${row.item}: ${row.result}`).join("\n");
+//   navigator.clipboard.writeText(text);
+// };
 
 const TagChecklist = () => {
   return (

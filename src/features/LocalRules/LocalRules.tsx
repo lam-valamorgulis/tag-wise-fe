@@ -1,3 +1,4 @@
+import Loading from "../../components/Loading";
 import LibraryResult from "./LibraryResult";
 import SearchRule, { FieldType } from "./SearchLibrary";
 import { useSearch } from "./useSearch";
@@ -11,6 +12,14 @@ function LocalRules() {
       propertyName: searchValues.propertyName!,
     });
   };
+
+  if (isSearching) {
+    return (
+      <div>
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <>

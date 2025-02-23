@@ -3,6 +3,7 @@ import {
   CommentOutlined,
   FileTextOutlined,
   GoldOutlined,
+  ProfileOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, theme } from "antd";
 import { useState } from "react";
@@ -42,15 +43,25 @@ const CommonLayout = () => {
           style={{ borderInlineEndStyle: "none" }}
           defaultSelectedKeys={["1"]}
           onClick={({ key }) => {
-            navigate(
-              key === "1"
-                ? "/"
-                : key === "2"
-                ? "/checklist"
-                : key === "3"
-                ? "/comments"
-                : "/hqrules"
-            );
+            switch (key) {
+              case "1":
+                navigate("/");
+                break;
+              case "2":
+                navigate("/account_profile");
+                break;
+              case "3":
+                navigate("/checklist");
+                break;
+              case "4":
+                navigate("/comments");
+                break;
+              case "5":
+                navigate("/hqrules");
+                break;
+              default:
+                navigate("/");
+            }
           }}
           items={[
             {
@@ -60,21 +71,26 @@ const CommonLayout = () => {
             },
             {
               key: "2",
+              icon: <ProfileOutlined />,
+              label: "Adobe Analytics Profile",
+            },
+            {
+              key: "3",
               icon: <FileTextOutlined />,
               label: "Check List",
             },
             {
-              key: "3",
+              key: "4",
               icon: <CommentOutlined />,
               label: "Comments Template",
             },
             {
-              key: "4",
+              key: "5",
               icon: <GoldOutlined />,
               label: "HQ Rules",
             },
           ]}
-        />
+        />{" "}
       </Sider>
 
       {/* Main Layout */}

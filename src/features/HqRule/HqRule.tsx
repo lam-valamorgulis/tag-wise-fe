@@ -209,8 +209,6 @@ const HqRule: React.FC = () => {
           propertyName: searchProperties.propertyName ?? "",
         });
 
-        console.log("API Response:", response);
-
         const formattedData =
           response?.data?.map((item: Property) => ({
             key: item.propertyId,

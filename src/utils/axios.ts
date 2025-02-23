@@ -17,6 +17,10 @@ const apiComment = axios.create({
   baseURL: BASE_URL + "/comments",
 });
 
+const apiAdobeProfile = axios.create({
+  baseURL: BASE_URL + "/account_profile",
+});
+
 const apiSearchLibrary = async (data: {
   libraryName: string;
   propertyName: string;
@@ -158,6 +162,19 @@ const apiDeleteComment = async (commentId: string) => {
   }
 };
 
+const apiSearchProfile = async (data: {
+  siteCode: string;
+  subsidinary: string;
+}) => {
+  try {
+    const response = await apiAdobeProfile.post("/", data);
+    return response.data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
 export {
   apiCreateComment,
   apiCreateLibrary,
@@ -168,6 +185,7 @@ export {
   apiLibrary,
   apiRuleList,
   apiSearchLibrary,
+  apiSearchProfile,
   apiSearchProperty,
   apiSummaryLibrary,
   apiValidateRule,
